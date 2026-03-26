@@ -1,0 +1,58 @@
+{% extends 'inventory/base.html' %}
+
+{% block content %}
+<h2>Order {{ order.order_number }}</h2>
+<p>Customer: {{ order.customer.name }}</p>
+<p>Status: {{ order.get_status_display }}</p>
+
+<h3>Items</h3>
+<table class="table">
+    <thead>
+        <tr><th>Product</th><th>Quantity</th><th>Unit Price</th><th>Total</th> </tr>
+    </thead>
+    <tbody>
+        {% for item in items %}
+        <tr>
+            <td>{{ item.product.name }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.unit_price }}</td>
+            <td>{{ item.total_price }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="4">No items.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% if order.status == 'DRAFT' %}
+<h4>Add Item</h4>
+<form method="post" class="row g-3">
+    {% csrf_token %}
+    {{ item_form.as_p }}
+    <div class="col-auto"><button type="submit" name="add_item" class="btn btn-success">Add Item</button></div>
+</form>
+
+<form method="post" class="mt-3">
+    {% csrf_token %}
+    <button type="submit" name="confirm" class="btn btn-primary">Confirm Order</button>
+    <button type="submit" name="cancel" class="btn btn-danger">Cancel Order</button>
+</form>
+{% endif %}
+
+{% if order.status == 'CONFIRMED' %}
+<h4>Fulfill Order</h4>
+<form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="location" class="form-label">Fulfill from Location</label>
+        <select name="location" id="location" class="form-select">
+            <option value="">--Select--</option>
+            {% for loc in locations %}
+            <option value="{{ loc.id }}">{{ loc.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit" name="fulfill" class="btn btn-success">Fulfill Order</button>
+</form>
+{% endif %}
+{% endblock %}

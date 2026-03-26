@@ -1,0 +1,23 @@
+{% extends 'inventory/base.html' %}
+
+{% block content %}
+<h2>Stock by Location</h2>
+<canvas id="stockLocationChart" width="400" height="200"></canvas>
+<script>
+    const data = {{ data|safe }};
+    const ctx = document.getElementById('stockLocationChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: data.map(d => d.location),
+            datasets: [{
+                label: 'Quantity',
+                data: data.map(d => d.quantity),
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        }
+    });
+</script>
+{% endblock %}

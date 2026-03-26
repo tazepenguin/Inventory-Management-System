@@ -1,0 +1,29 @@
+{% extends 'inventory/base.html' %}
+
+{% block content %}
+<h2>Sales Orders</h2>
+<a href="{% url 'order_create' %}" class="btn btn-primary mb-3">New Order</a>
+<table class="table table-striped">
+    <thead>
+        <tr><th>Order #</th><th>Customer</th><th>Date</th><th>Status</th><th>Total</th><th>Actions</th> </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order.order_number }}</td>
+            <td>{{ order.customer.name }}</td>
+            <td>{{ order.order_date|date:"Y-m-d H:i" }}</td>
+            <td>{{ order.get_status_display }}</td>
+            <td>{{ order.total_amount }}</td>
+            <td>
+                {% if order.status == 'DRAFT' %}
+                <a href="{% url 'order_edit' order.pk %}" class="btn btn-sm btn-warning">Edit</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6">No orders.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

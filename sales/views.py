@@ -103,7 +103,7 @@ def order_edit(request, pk):
         item_form = OrderItemForm()
     locations = Location.objects.filter(is_active=True)
     return render(
-    request,
-    'sales/order_edit.html',
-    {'order': order, 'items': items, 'item_form': item_form, 'locations': locations}
-)
+        request,
+        'sales/order_edit.html',
+        {'order': order, 'items': items, 'item_form': item_form, 'locations': locations}
+    )

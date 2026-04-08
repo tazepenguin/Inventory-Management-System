@@ -3,9 +3,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils import timezone
 
-# Add these imports:
-from .models import Customer, SalesOrder, Location, Transaction
-from .forms import CustomerForm, SalesOrderForm, OrderItemForm
+from .forms import CustomerForm, OrderItemForm, SalesOrderForm
+from .models import Customer, Location, SalesOrder, Transaction
+
 
 @login_required
 def customer_list(request):
@@ -80,9 +80,15 @@ def order_edit(request, pk):
                 try:
                     location = Location.objects.get(id=location_id)
                     for item in items:
-                        stock = item.product.stocks.filter(location=location).first()
+                        stock = item.product.stocks.filter(
+                            location=location
+                        ).first()
                         if not stock or stock.quantity < item.quantity:
-                            messages.error(request, f"Insufficient stock for {item.product.name} at {location.name}")
+                            messages.error(
+                                request,
+                                f"Insufficient stock for {item.product.name} "
+                                f"at {location.name}"
+                            )
                             break
                     else:
                         for item in items:
@@ -108,5 +114,10 @@ def order_edit(request, pk):
     return render(
         request,
         'sales/order_edit.html',
-        {'order': order, 'items': items, 'item_form': item_form, 'locations': locations}
+        {
+            'order': order,
+            'items': items,
+            'item_form': item_form,
+            'locations': locations,
+        }
     )

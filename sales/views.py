@@ -2,14 +2,16 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
 from django.utils import timezone
-from .models import Customer, SalesOrder, OrderItem
+from .models import Customer, SalesOrder
 from .forms import CustomerForm, SalesOrderForm, OrderItemForm
 from inventory.models import Location, Transaction
+
 
 @login_required
 def customer_list(request):
     customers = Customer.objects.all()
     return render(request, 'sales/customer_list.html', {'customers': customers})
+
 
 @login_required
 def customer_create(request):
@@ -22,6 +24,7 @@ def customer_create(request):
     else:
         form = CustomerForm()
     return render(request, 'sales/customer_form.html', {'form': form})
+
 
 @login_required
 def order_list(request):

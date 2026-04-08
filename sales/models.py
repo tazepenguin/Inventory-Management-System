@@ -49,6 +49,7 @@ class SalesOrder(models.Model):
     def __str__(self):
         return f"{self.order_number} - {self.customer.name}"
 
+
 class OrderItem(models.Model):
     order = models.ForeignKey(SalesOrder, on_delete=models.CASCADE, related_name='items')
     product = models.ForeignKey(Product, on_delete=models.PROTECT)

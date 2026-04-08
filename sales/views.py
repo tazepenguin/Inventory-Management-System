@@ -1,11 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils import timezone
-from .models import Customer, SalesOrder
-from .forms import CustomerForm, SalesOrderForm, OrderItemForm
-from inventory.models import Location, Transaction
-
 
 @login_required
 def customer_list(request):

@@ -3,6 +3,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils import timezone
 
+# Add these imports:
+from .models import Customer, SalesOrder, Location, Transaction
+from .forms import CustomerForm, SalesOrderForm, OrderItemForm
+
 @login_required
 def customer_list(request):
     customers = Customer.objects.all()

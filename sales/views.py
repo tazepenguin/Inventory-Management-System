@@ -28,6 +28,7 @@ def order_list(request):
     orders = SalesOrder.objects.select_related('customer').all()
     return render(request, 'sales/order_list.html', {'orders': orders})
 
+
 @login_required
 def order_create(request):
     if request.method == 'POST':
@@ -40,6 +41,7 @@ def order_create(request):
     else:
         form = SalesOrderForm()
     return render(request, 'sales/order_form.html', {'form': form})
+
 
 @login_required
 def order_edit(request, pk):
@@ -100,4 +102,8 @@ def order_edit(request, pk):
     else:
         item_form = OrderItemForm()
     locations = Location.objects.filter(is_active=True)
-    return render(request, 'sales/order_edit.html', {'order': order, 'items': items, 'item_form': item_form, 'locations': locations})
+    return render(
+    request,
+    'sales/order_edit.html',
+    {'order': order, 'items': items, 'item_form': item_form, 'locations': locations}
+)
